@@ -25,13 +25,15 @@ TrainningStartJob()
         and PixelGetColor(76, 984, 'RGB') == 0xDFECE6) {
         OutputLog("Click 開始訓練任務")
         Click(TaskNPCPos*)
-        Sleep(1000)
+        Sleep(500)
     }
     
     ; 兵器訓練初階
-    If (PixelGetColor(1041, 222, 'RGB') == 0xE9DFCA) {
-        OutputLog("Click 兵器訓練初階")
-        Click(1041, 222)
+    If (PixelGetColor(903, 219, 'RGB') == 0x895F30) {
+        ; OutputLog("Click 兵器訓練初階")
+        ; Click(903, 219)
+        OutputLog("Click 兵器訓練中階")
+        Click(863, 371)
         Sleep(1000)
         ; click any
         Click(1041, 222)
@@ -39,13 +41,13 @@ TrainningStartJob()
     }
 
     ; 開始訓練
-    If (PixelGetColor(882, 337, 'RGB') == 0xA07F56) {
+    If (PixelGetColor(897, 328, 'RGB') == 0xCCB99C) {
         OutputLog("Click 開始訓練")
-        Click(882, 337)
-        Sleep(1000)
+        Click(897, 328)
+        Sleep(500)
         ; click any
         Click(882, 337)
-        Sleep(1000)
+        Sleep(500)
     }
 }
 
@@ -57,14 +59,15 @@ FightingJob() {
     If (PixelGetColor(92, 60, 'RGB') == 0xAABCB8) {
         OutputLog("Click 自動戰鬥")
         Click(92, 60)
-        Sleep(15000)
+        Sleep(10000)
     }
 
     ; 戰鬥勝利
     If (PixelGetColor(423, 151, 'RGB') == 0xFAF9A7) {
+        Sleep(200)
         OutputLog("Click 戰鬥勝利")
         Click(423, 151)
-        Sleep(1000)
+        Sleep(500)
     }
 }
 
@@ -78,9 +81,12 @@ FightingJob() {
 ^!f:: ; Ctrl+Alt+F
 {
     global TaskNPCPos
-    MouseGetPos(&x, &y)
-    TaskNPCPos := [x, y]
-    OutputLog("TaskNPCPos: " TaskNPCPos[1] ", " TaskNPCPos[2])
+    if (TaskNPCPos.Length = 0) {
+        MouseGetPos(&x, &y)
+        TaskNPCPos := [x, y]
+        OutputLog("TaskNPCPos: " TaskNPCPos[1] ", " TaskNPCPos[2])
+    } else
+        TaskNPCPos := []
 }
 
 ^!z:: ; Ctrl+Alt+Z hotkey.
