@@ -1,0 +1,91 @@
+#Include ./Utility/Common.ahk2
+
+AppExe := "FSM-Win64-Shipping.exe"
+UniqueID := WinExist("ahk_exe " AppExe)
+if not UniqueID {
+    OutputLog("[" AppExe "] not found")
+    ExitApp
+}
+OutputLog("[" AppExe "] found [" UniqueID "]")
+
+TaskNPCPos := []
+
+SetTimer TrainningStartJob, 200
+SetTimer FightingJob, 200
+
+Return
+
+TrainningStartJob()
+{
+    If not WinActive("ahk_id " UniqueID)
+        return
+
+    ; 開始訓練任務
+    If (TaskNPCPos.Length > 0 
+        and PixelGetColor(76, 984, 'RGB') == 0xDFECE6) {
+        OutputLog("Click 開始訓練任務")
+        Click(TaskNPCPos*)
+        Sleep(1000)
+    }
+    
+    ; 兵器訓練初階
+    If (PixelGetColor(1041, 222, 'RGB') == 0xE9DFCA) {
+        OutputLog("Click 兵器訓練初階")
+        Click(1041, 222)
+        Sleep(1000)
+        ; click any
+        Click(1041, 222)
+        Sleep(1000)
+    }
+
+    ; 開始訓練
+    If (PixelGetColor(882, 337, 'RGB') == 0xA07F56) {
+        OutputLog("Click 開始訓練")
+        Click(882, 337)
+        Sleep(1000)
+        ; click any
+        Click(882, 337)
+        Sleep(1000)
+    }
+}
+
+FightingJob() {
+    If not WinActive("ahk_id " UniqueID)
+        return
+
+    ; 自動戰鬥
+    If (PixelGetColor(92, 60, 'RGB') == 0xAABCB8) {
+        OutputLog("Click 自動戰鬥")
+        Click(92, 60)
+        Sleep(15000)
+    }
+
+    ; 戰鬥勝利
+    If (PixelGetColor(423, 151, 'RGB') == 0xFAF9A7) {
+        OutputLog("Click 戰鬥勝利")
+        Click(423, 151)
+        Sleep(1000)
+    }
+}
+
+^!d:: ; debug
+{
+    color := PixelGetColor(745, 216, 'RGB')
+    OutputLog(color)
+}
+
+; 記錄訓練任務位置
+^!f:: ; Ctrl+Alt+F
+{
+    global TaskNPCPos
+    MouseGetPos(&x, &y)
+    TaskNPCPos := [x, y]
+    OutputLog("TaskNPCPos: " TaskNPCPos[1] ", " TaskNPCPos[2])
+}
+
+^!z:: ; Ctrl+Alt+Z hotkey.
+{
+    OutputLog("Z pressed")
+    OutputLog("Stopped")
+    ExitApp
+}
