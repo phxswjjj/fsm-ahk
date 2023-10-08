@@ -1,0 +1,13 @@
+class TrainningLevel {
+    __New(title, positions) {
+        this.Title := title
+        this.Positions := positions
+    }
+}
+
+class TrainningLevelSettings {
+    __New() {
+        this.Lv1 := TrainningLevel("兵器訓練初階", [903, 219])
+        this.Lv2 := TrainningLevel("兵器訓練中階", [863, 371])
+    }
+}
