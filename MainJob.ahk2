@@ -1,5 +1,6 @@
 #Include ./Utility/Common.ahk2
 #Include ./Data/TrainningLevel.ahk2
+#Include ./Action/WalkHorizontally.ahk2
 
 AppExe := "FSM-Win64-Shipping.exe"
 UniqueID := WinExist("ahk_exe " AppExe)
@@ -10,9 +11,10 @@ if not UniqueID {
 OutputLog("[" AppExe "] found [" UniqueID "]")
 
 TrainningLevelInfo := TrainningLevelSettings().Lv1
+WalkCtrl := WalkHorizontally()
 TaskNPCPos := []
 
-SetTimer TrainningStartJob, 200
+SetTimer OuterWalkingJob, 200
 SetTimer FightingJob, 200
 
 Return
@@ -23,13 +25,12 @@ TrainningStartJob()
         return
 
     ; 開始訓練任務
-    If (TaskNPCPos.Length > 0 
-        and PixelGetColor(76, 984, 'RGB') == 0xDFECE6) {
+    If (TaskNPCPos.Length > 0 and PixelGetColor(76, 984, 'RGB') == 0xDFECE6) {
         OutputLog("Click 開始訓練任務")
         Click(TaskNPCPos*)
         Sleep(500)
     }
-    
+
     ; 兵器訓練初階
     If (PixelGetColor(903, 219, 'RGB') == 0x895F30) {
         OutputLog("Click " TrainningLevelInfo.Title)
@@ -47,6 +48,17 @@ TrainningStartJob()
         Sleep(500)
         ; click any
         Click(882, 337)
+        Sleep(500)
+    }
+}
+
+OuterWalkingJob() {
+    If not WinActive("ahk_id " UniqueID)
+        return
+
+    ; 左右移動
+    If (TaskNPCPos.Length > 0 and PixelGetColor(76, 984, 'RGB') == 0xDFECE6) {
+        WalkCtrl.Walk(1000)
         Sleep(500)
     }
 }

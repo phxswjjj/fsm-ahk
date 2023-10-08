@@ -1,0 +1,27 @@
+DirectionType := {
+    Left: 1,
+    Right: 2,
+}
+
+class WalkHorizontally {
+    __New() {
+        global DirectionType
+        this.Direction := DirectionType.Left
+    }
+
+    Walk(delay := 45, toggle := true) {
+        keyCode := "a"
+        if (this.Direction = DirectionType.Right)
+            keyCode := "d"
+        Send("{" keyCode " down}")
+        Sleep(delay)
+        Send("{" keyCode " up}")
+
+        if (toggle) {
+            if (this.Direction = DirectionType.Left)
+                this.Direction := DirectionType.Right
+            else
+                this.Direction := DirectionType.Left
+        }
+    }
+}
