@@ -89,6 +89,30 @@ FightingJob() {
     OutputLog(color)
 }
 
+; 賭博失敗重開
+$f1::
+{
+    global UniqueID
+
+    Runwait("taskkill /im " AppExe " /f")
+    Sleep(1000)
+    OutputLog("Restart..")
+    Run("steam://rungameid/1597460")
+
+    ; reload
+    loop 30
+    {
+        UniqueID := WinExist("ahk_exe " AppExe)
+        if (not UniqueID)
+            Sleep(1000)
+    }
+    if not UniqueID {
+        OutputLog("[" AppExe "] not found")
+        ExitApp
+    }
+    OutputLog("[" AppExe "] found [" UniqueID "]")
+}
+
 ; 記錄訓練任務位置
 ^!f:: ; Ctrl+Alt+F
 {
