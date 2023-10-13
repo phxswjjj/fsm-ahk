@@ -76,10 +76,15 @@ FightingJob() {
 
     ; 戰鬥勝利
     If (PixelGetColor(423, 151, 'RGB') == 0xFAF9A7) {
-        Sleep(200)
         OutputLog("Click 戰鬥勝利")
-        Click(423, 151)
-        Sleep(500)
+        Loop 10 {
+            If (PixelGetColor(423, 151, 'RGB') == 0xFAF9A7) {
+                ; click any
+                Click(1041, 222)
+                Sleep(500)
+            } else
+                break
+        }
     }
 }
 
