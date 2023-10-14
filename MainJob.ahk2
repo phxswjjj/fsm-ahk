@@ -12,52 +12,19 @@ OutputLog("[" AppExe "] found [" UniqueID "]")
 
 TrainningLevelInfo := TrainningLevelSettings().Lv1
 WalkCtrl := WalkHorizontally()
-TaskNPCPos := []
 
 SetTimer OuterWalkingJob, 200
 SetTimer FightingJob, 200
+SetTimer FightLoseJob, 200
 
 Return
-
-TrainningStartJob()
-{
-    If not WinActive("ahk_id " UniqueID)
-        return
-
-    ; 開始訓練任務
-    If (TaskNPCPos.Length > 0 and PixelGetColor(76, 984, 'RGB') == 0xDFECE6) {
-        OutputLog("Click 開始訓練任務")
-        Click(TaskNPCPos*)
-        Sleep(500)
-    }
-
-    ; 兵器訓練初階
-    If (PixelGetColor(903, 219, 'RGB') == 0x895F30) {
-        OutputLog("Click " TrainningLevelInfo.Title)
-        Click(TrainningLevelInfo.Positions*)
-        Sleep(1000)
-        ; click any
-        Click(1041, 222)
-        Sleep(1000)
-    }
-
-    ; 開始訓練
-    If (PixelGetColor(897, 328, 'RGB') == 0xCCB99C) {
-        OutputLog("Click 開始訓練")
-        Click(897, 328)
-        Sleep(500)
-        ; click any
-        Click(882, 337)
-        Sleep(500)
-    }
-}
 
 OuterWalkingJob() {
     If not WinActive("ahk_id " UniqueID)
         return
 
     ; 左右移動
-    If (TaskNPCPos.Length > 0 and PixelGetColor(76, 984, 'RGB') == 0xDFECE6) {
+    If (PixelGetColor(76, 984, 'RGB') == 0xDFECE6) {
         WalkCtrl.Walk(1000)
         Sleep(500)
     }
@@ -85,6 +52,21 @@ FightingJob() {
             } else
                 break
         }
+    }
+}
+
+FightLoseJob() {
+    If not WinActive("ahk_id " UniqueID)
+        return
+    
+    ; 戰敗
+    If (PixelGetColor(971, 587, 'RGB') == 0xB461E6
+        and PixelGetColor(758, 334, 'RGB') == 0xE9ADFD) {
+        ; 按鈕緩慢出現
+        Sleep(2500)
+        OutputLog("Click 戰敗返回重生點")
+        Click(1167, 853)
+        Sleep(2000)
     }
 }
 
@@ -116,18 +98,6 @@ $f1::
         ExitApp
     }
     OutputLog("[" AppExe "] found [" UniqueID "]")
-}
-
-; 記錄訓練任務位置
-^!f:: ; Ctrl+Alt+F
-{
-    global TaskNPCPos
-    if (TaskNPCPos.Length = 0) {
-        MouseGetPos(&x, &y)
-        TaskNPCPos := [x, y]
-        OutputLog("TaskNPCPos: " TaskNPCPos[1] ", " TaskNPCPos[2])
-    } else
-        TaskNPCPos := []
 }
 
 ^!z:: ; Ctrl+Alt+Z hotkey.
