@@ -1,5 +1,5 @@
 #Include ./Utility/Common.ahk2
-#Include ./Data/TrainningLevel.ahk2
+#Include ./Data/FightingSettings.ahk2
 #Include ./Action/WalkHorizontally.ahk2
 
 AppExe := "FSM-Win64-Shipping.exe"
@@ -10,7 +10,9 @@ if not UniqueID {
 }
 OutputLog("[" AppExe "] found [" UniqueID "]")
 
-TrainningLevelInfo := TrainningLevelSettings().Lv1
+FightingSetting := FightingSettings()
+FightingSetting.AutoFighting := false
+
 WalkCtrl := WalkHorizontally()
 
 SetTimer OuterWalkingJob, 200
@@ -35,10 +37,29 @@ FightingJob() {
         return
 
     ; 自動戰鬥
-    If (PixelGetColor(92, 60, 'RGB') == 0xAABCB8) {
+    If (FightingSetting.AutoFighting and PixelGetColor(92, 60, 'RGB') == 0xAABCB8) {
         OutputLog("Click 自動戰鬥")
         Click(92, 60)
         Sleep(10000)
+    }
+    ; 取消自動戰鬥
+    If (not FightingSetting.AutoFighting and PixelGetColor(92, 60, 'RGB') == 0x939F9F) {
+        OutputLog("Click 取消自動戰鬥")
+        Click(92, 60)
+        Sleep(500)
+    }
+
+    ; 施放技能
+    If (not FightingSetting.AutoFighting 
+        and PixelGetColor(92, 60, 'RGB') == 0xAABCB8
+        and PixelGetColor(1788, 775, 'RGB') == 0xADBAB5) {
+        Send(FightingSetting.ManualSkillCode)
+        Sleep(200)
+        For pos in FightingSetting.MonsterPositions {
+            Click(pos*)
+            Sleep(100)
+        }
+        Sleep(1000)
     }
 
     ; 戰鬥勝利
@@ -72,7 +93,7 @@ FightLoseJob() {
 
 ^!d:: ; debug
 {
-    color := PixelGetColor(745, 216, 'RGB')
+    color := PixelGetColor(1788, 775, 'RGB')
     OutputLog(color)
 }
 
