@@ -99,8 +99,11 @@ CollectStoneJob() {
     If not WinActive("ahk_id " UniqueID)
         return
 
-    If (PixelGetColor(791, 731, 'RGB') == 0xDEE4D7
-        and PixelGetColor(1248, 900, 'RGB') == 0xFFF5CA) {
+    If (PixelGetColor(791, 731, 'RGB') != 0xDEE4D7)
+        return
+
+    btnColor := PixelGetColor(1248, 900, 'RGB')
+    If (btnColor == 0xFFF5CA or btnColor == 0xEEE4CD) {
         OutputLog("Click 五行源石一鍵領取")
         Click(1248, 900)
         Sleep(2000)
@@ -111,7 +114,7 @@ CollectStoneJob() {
 
 ^!d:: ; debug
 {
-    color := PixelGetColor(92, 60, 'RGB')
+    color := PixelGetColor(1248, 900, 'RGB')
     OutputLog(color)
 }
 
