@@ -18,6 +18,7 @@ WalkCtrl := WalkHorizontally()
 SetTimer OuterWalkingJob, 200
 SetTimer FightingJob, 200
 SetTimer FightLoseJob, 200
+SetTimer CollectStoneJob, 36 000 000
 
 Return
 
@@ -88,6 +89,20 @@ FightLoseJob() {
         OutputLog("Click 戰敗返回重生點")
         Click(1167, 853)
         Sleep(2000)
+    }
+}
+
+CollectStoneJob() {
+    If not WinActive("ahk_id " UniqueID)
+        return
+
+    If (PixelGetColor(791, 731, 'RGB') == 0xDEE4D7
+        and PixelGetColor(1248, 900, 'RGB') == 0xFFF5CA) {
+        OutputLog("Click 五行源石一鍵領取")
+        Click(1248, 900)
+        Sleep(2000)
+        Click(886, 835)
+        Sleep(1000)
     }
 }
 
