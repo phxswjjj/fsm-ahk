@@ -44,7 +44,7 @@ FightingJob() {
         Sleep(10000)
     }
     ; 取消自動戰鬥
-    If (not FightingSetting.AutoFighting and PixelGetColor(92, 60, 'RGB') == 0x939F9F) {
+    If (not FightingSetting.AutoFighting and PixelGetColor(92, 60, 'RGB') == 0xDEF7F7) {
         OutputLog("Click 取消自動戰鬥")
         Click(92, 60)
         Sleep(500)
@@ -108,7 +108,7 @@ CollectStoneJob() {
 
 ^!d:: ; debug
 {
-    color := PixelGetColor(1833, 776, 'RGB')
+    color := PixelGetColor(92, 60, 'RGB')
     OutputLog(color)
 }
 
