@@ -55,6 +55,9 @@ FightingJob() {
         and PixelGetColor(92, 60, 'RGB') == 0xAABCB8
         and PixelGetColor(1833, 776, 'RGB') == 0xE7F3EF) {
         Send(FightingSetting.ManualSkillCode)
+        Sleep(100)
+        ; 戰術支援
+        Send('f')
         Sleep(200)
         For pos in FightingSetting.MonsterPositions {
             Click(pos*)
