@@ -4,7 +4,7 @@ class FightingSettings {
         this.ManualSkillCode := '2'
         this.MonsterPositions := [
             ; ally
-            [1200, 519],
+            [1655, 656],
             ; enemy
             [740, 539], [655, 571], [415, 565],
             [551, 774], [227, 588], [363, 699]
