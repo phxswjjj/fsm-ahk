@@ -18,7 +18,9 @@ WalkCtrl := WalkHorizontally()
 SetTimer OuterWalkingJob, 200
 SetTimer FightingJob, 200
 SetTimer FightLoseJob, 200
-SetTimer CollectStoneJob, 36 000 000
+
+; 5 hours
+SetTimer CollectStoneJob, 5 * 60 * 60 * 1000
 
 Return
 
@@ -107,6 +109,9 @@ CollectStoneJob() {
         OutputLog("Click 五行源石一鍵領取")
         Click(1248, 900)
         Sleep(2000)
+        ; 保存結果
+        Send('{PrintScreen}')
+        Sleep(1000)
         Click(886, 835)
         Sleep(1000)
     }
