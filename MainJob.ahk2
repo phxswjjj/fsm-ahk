@@ -28,6 +28,10 @@ OuterWalkingJob() {
     If not WinActive("ahk_id " UniqueID)
         return
 
+    stateOfCapsLock := GetKeyState("CapsLock", "T")
+    If (stateOfCapsLock)
+        return
+
     ; 左右移動
     If (PixelGetColor(76, 984, 'RGB') == 0xDFECE6) {
         WalkCtrl.Walk(1000)
@@ -37,6 +41,10 @@ OuterWalkingJob() {
 
 FightingJob() {
     If not WinActive("ahk_id " UniqueID)
+        return
+
+    stateOfCapsLock := GetKeyState("CapsLock", "T")
+    If (stateOfCapsLock)
         return
 
     ; 自動戰鬥
