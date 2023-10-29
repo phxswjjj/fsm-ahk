@@ -11,7 +11,7 @@ if not UniqueID {
 OutputLog("[" AppExe "] found [" UniqueID "]")
 
 FightingSetting := FightingSettings()
-FightingSetting.AutoFighting := false
+FightingSetting.AutoFighting := true
 
 WalkCtrl := WalkHorizontally()
 
@@ -19,8 +19,8 @@ SetTimer OuterWalkingJob, 200
 SetTimer FightingJob, 200
 SetTimer FightLoseJob, 200
 
-; 5 hours
-SetTimer CollectStoneJob, 5 * 60 * 60 * 1000
+; 10 min
+SetTimer CollectStoneJob, 10 * 60 * 1000
 
 Return
 
@@ -102,6 +102,13 @@ CollectStoneJob() {
         return
 
     If (PixelGetColor(791, 731, 'RGB') != 0xDEE4D7)
+        return
+
+    fullTextColorRed := PixelGetColor(311, 249, 'RGB')
+    If (fullTextColorRed != 0x4F000C)
+        return
+    fullTextColorWhite := PixelGetColor(321, 243, 'RGB')
+    If (fullTextColorWhite != 0x808080)
         return
 
     btnColor := PixelGetColor(1248, 900, 'RGB')
