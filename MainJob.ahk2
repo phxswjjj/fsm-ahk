@@ -1,5 +1,6 @@
 #Include ./Utility/Common.ahk2
 #Include ./Data/FightingSettings.ahk2
+#Include ./Data/CollectStoneSettings.ahk2
 #Include ./Action/WalkHorizontally.ahk2
 
 AppExe := "FSM-Win64-Shipping.exe"
@@ -12,6 +13,8 @@ OutputLog("[" AppExe "] found [" UniqueID "]")
 
 FightingSetting := FightingSettings()
 FightingSetting.AutoFighting := true
+
+CollectStoneSetting := CollectStoneSettings()
 
 WalkCtrl := WalkHorizontally()
 
@@ -109,18 +112,20 @@ CollectStoneJob() {
     If not WinActive("ahk_id " UniqueID)
         return
 
-    If (PixelGetColor(791, 731, 'RGB') != 0xDEE4D7)
+    ; 領地管理特徵
+    territoryManageColor := PixelGetColor(791, 731, 'RGB')
+    If (!ArrayContain([0xDEE4D7, 0x6A4831], territoryManageColor))
         return
 
     fullTextColorRed := PixelGetColor(311, 249, 'RGB')
-    If (fullTextColorRed != 0x4F000C)
+    if (!ArrayContain([0x4F000C, 0x9D0019], fullTextColorRed))
         return
     fullTextColorWhite := PixelGetColor(321, 243, 'RGB')
-    If (fullTextColorWhite != 0x808080)
+    if (!ArrayContain([0x808080, 0xFFFFFF], fullTextColorWhite))
         return
 
     btnColor := PixelGetColor(1248, 900, 'RGB')
-    If (btnColor == 0xFFF5CA or btnColor == 0xEEE4CD) {
+    if (ArrayContain([0xFFF5CA, 0xEEE4CD], btnColor)) {
         OutputLog("Click 五行源石一鍵領取")
         Click(1248, 900)
         Sleep(2000)
@@ -129,6 +134,24 @@ CollectStoneJob() {
         Sleep(1000)
         Click(886, 835)
         Sleep(1000)
+    } else {
+        OutputLog("Click 源石場領取")
+        for (position in CollectStoneSetting.StoneFactoryPositions) {
+            Click(position*)
+            Sleep(2000)
+
+            ; 保存結果
+            Send('{PrintScreen}')
+            Sleep(1000)
+
+            ; 確定
+            btnConfirmPos := [912, 817]
+            btnConfirmColor := PixelGetColor(btnConfirmPos[1], btnConfirmPos[2], 'RGB')
+            if (btnConfirmColor = 0xF5EEDA) {
+                Click(btnConfirmPos*)
+                Sleep(2000)
+            }
+        }
     }
 }
 

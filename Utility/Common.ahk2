@@ -13,3 +13,11 @@ Between(var, min, max)
     else
         return false
 }
+
+ArrayContain(array, target) {
+    for (item in array) {
+        if (item = target)
+            return true
+    }
+    return false
+}

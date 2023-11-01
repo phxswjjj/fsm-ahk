@@ -1,0 +1,16 @@
+class CollectStoneSettings {
+    __New() {
+        this.StoneFactoryPositions := [
+            ; 木
+            [311, 249],
+            ; 水
+            [543, 249],
+            ; 金
+            [765, 249],
+            ; 火
+            [215, 388],
+            ; 土
+            [446, 544]
+        ]
+    }
+}
