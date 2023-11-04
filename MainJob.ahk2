@@ -57,28 +57,28 @@ FightingJob() {
         Sleep(10000)
     }
     ; 取消自動戰鬥
-    If (not FightingSetting.AutoFighting and PixelGetColor(92, 60, 'RGB') == 0xDEF7F7) {
+    If ( not FightingSetting.AutoFighting and PixelGetColor(92, 60, 'RGB') == 0xDEF7F7) {
         OutputLog("Click 取消自動戰鬥")
         Click(92, 60)
         Sleep(500)
     }
 
     ; 施放技能
-    If (not FightingSetting.AutoFighting 
+    If ( not FightingSetting.AutoFighting
         and PixelGetColor(92, 60, 'RGB') == 0xAABCB8
         and PixelGetColor(1833, 776, 'RGB') == 0xE7F3EF) {
-        Send(FightingSetting.ManualSkillCode)
-        Sleep(100)
-        ; 戰術支援
-        Send('f')
-        Sleep(200)
-        For pos in FightingSetting.MonsterPositions {
-            Click(pos*)
+            Send(FightingSetting.ManualSkillCode)
             Sleep(100)
-        }
-        Sleep(1000)
+            ; 戰術支援
+            Send('f')
+            Sleep(200)
+            For pos in FightingSetting.MonsterPositions {
+                Click(pos*)
+                Sleep(100)
+            }
+            Sleep(1000)
     }
-    
+
     ; 戰鬥勝利
     If (PixelGetColor(423, 151, 'RGB') == 0xFAF9A7) {
         OutputLog("Click 戰鬥勝利")
@@ -96,15 +96,15 @@ FightingJob() {
 FightLoseJob() {
     If not WinActive("ahk_id " UniqueID)
         return
-    
+
     ; 戰敗
     If (PixelGetColor(971, 587, 'RGB') == 0xB461E6
         and PixelGetColor(758, 334, 'RGB') == 0xE9ADFD) {
-        ; 按鈕緩慢出現
-        Sleep(2500)
-        OutputLog("Click 戰敗返回重生點")
-        Click(1167, 853)
-        Sleep(2000)
+            ; 按鈕緩慢出現
+            Sleep(2500)
+            OutputLog("Click 戰敗返回重生點")
+            Click(1167, 853)
+            Sleep(2000)
     }
 }
 
@@ -135,7 +135,7 @@ CollectStoneJob() {
             Send('{PrintScreen}')
             Sleep(1000)
         }
-            
+
         Click(886, 835)
         Sleep(1000)
     } else {
@@ -181,7 +181,7 @@ $f1::
     loop 30
     {
         UniqueID := WinExist("ahk_exe " AppExe)
-        if (not UniqueID)
+        if ( not UniqueID)
             Sleep(1000)
     }
     if not UniqueID {
