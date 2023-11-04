@@ -129,9 +129,13 @@ CollectStoneJob() {
         OutputLog("Click 五行源石一鍵領取")
         Click(1248, 900)
         Sleep(2000)
+
         ; 保存結果
-        Send('{PrintScreen}')
-        Sleep(1000)
+        if (CollectStoneSetting.PrintScreen) {
+            Send('{PrintScreen}')
+            Sleep(1000)
+        }
+            
         Click(886, 835)
         Sleep(1000)
     } else {
@@ -141,8 +145,10 @@ CollectStoneJob() {
             Sleep(2000)
 
             ; 保存結果
-            Send('{PrintScreen}')
-            Sleep(1000)
+            if (CollectStoneSetting.PrintScreen) {
+                Send('{PrintScreen}')
+                Sleep(1000)
+            }
 
             ; 確定
             btnConfirmPos := [912, 817]

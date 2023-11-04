@@ -1,5 +1,6 @@
 class CollectStoneSettings {
     __New() {
+        this.PrintScreen := false
         this.StoneFactoryPositions := [
             ; 木
             [311, 249],
