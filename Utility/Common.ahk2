@@ -1,23 +1,36 @@
 
-
-OutputLog(msg)
-{
-    timeStr := FormatTime(, "hh:mm:ss")
-    OutputDebug("[" timeStr "] " msg "`n")
+try {
+    Utility := Utility
+} catch Error as e {
+    Utility := {}
 }
 
-Between(var, min, max)
-{
-    if var>=min  and var<=max
-        return true
-    else
-        return false
-}
+__Init() {
+    global Utility
 
-ArrayContain(array, target) {
-    for (item in array) {
-        if (item = target)
-            return true
+    __OutputLog(this, msg) {
+        timeStr := FormatTime(, "hh:mm:ss")
+        OutputDebug("[" timeStr "] " msg "`n")   
     }
-    return false
+
+    __Between(this, var, min, max)    {
+        if var >= min and var <= max
+            return true
+        else
+            return false
+    }
+
+    __ArrayContain(this, array, target) {
+        for (item in array) {
+            if (item = target)
+                return true
+        }
+        return false
+    }
+
+    Utility.OutputLog := __OutputLog
+    Utility.Between := __Between
+    Utility.ArrayContain := __ArrayContain
 }
+
+__Init()

@@ -6,10 +6,10 @@
 AppExe := "FSM-Win64-Shipping.exe"
 UniqueID := WinExist("ahk_exe " AppExe)
 if not UniqueID {
-    OutputLog("[" AppExe "] not found")
+    Utility.OutputLog("[" AppExe "] not found")
     ExitApp
 }
-OutputLog("[" AppExe "] found [" UniqueID "]")
+Utility.OutputLog("[" AppExe "] found [" UniqueID "]")
 
 FightingSetting := FightingSettings()
 FightingSetting.AutoFighting := true
@@ -52,13 +52,13 @@ FightingJob() {
 
     ; 自動戰鬥
     If (FightingSetting.AutoFighting and PixelGetColor(92, 60, 'RGB') == 0xAABCB8) {
-        OutputLog("Click 自動戰鬥")
+        Utility.OutputLog("Click 自動戰鬥")
         Click(92, 60)
         Sleep(10000)
     }
     ; 取消自動戰鬥
     If ( not FightingSetting.AutoFighting and PixelGetColor(92, 60, 'RGB') == 0xDEF7F7) {
-        OutputLog("Click 取消自動戰鬥")
+        Utility.OutputLog("Click 取消自動戰鬥")
         Click(92, 60)
         Sleep(500)
     }
@@ -81,7 +81,7 @@ FightingJob() {
 
     ; 戰鬥勝利
     If (PixelGetColor(423, 151, 'RGB') == 0xFAF9A7) {
-        OutputLog("Click 戰鬥勝利")
+        Utility.OutputLog("Click 戰鬥勝利")
         Loop 10 {
             If (PixelGetColor(423, 151, 'RGB') == 0xFAF9A7) {
                 ; click any
@@ -102,7 +102,7 @@ FightLoseJob() {
         and PixelGetColor(758, 334, 'RGB') == 0xE9ADFD) {
             ; 按鈕緩慢出現
             Sleep(2500)
-            OutputLog("Click 戰敗返回重生點")
+            Utility.OutputLog("Click 戰敗返回重生點")
             Click(1167, 853)
             Sleep(2000)
     }
@@ -114,19 +114,19 @@ CollectStoneJob() {
 
     ; 領地管理特徵
     territoryManageColor := PixelGetColor(791, 731, 'RGB')
-    If (!ArrayContain([0xDEE4D7, 0x6A4831], territoryManageColor))
+    If (!Utility.ArrayContain([0xDEE4D7, 0x6A4831], territoryManageColor))
         return
 
     fullTextColorRed := PixelGetColor(311, 249, 'RGB')
-    if (!ArrayContain([0x4F000C, 0x9D0019], fullTextColorRed))
+    if (!Utility.ArrayContain([0x4F000C, 0x9D0019], fullTextColorRed))
         return
     fullTextColorWhite := PixelGetColor(321, 243, 'RGB')
-    if (!ArrayContain([0x808080, 0xFFFFFF], fullTextColorWhite))
+    if (!Utility.ArrayContain([0x808080, 0xFFFFFF], fullTextColorWhite))
         return
 
     btnColor := PixelGetColor(1248, 900, 'RGB')
-    if (ArrayContain([0xFFF5CA, 0xEEE4CD], btnColor)) {
-        OutputLog("Click 五行源石一鍵領取")
+    if (Utility.ArrayContain([0xFFF5CA, 0xEEE4CD], btnColor)) {
+        Utility.OutputLog("Click 五行源石一鍵領取")
         Click(1248, 900)
         Sleep(2000)
 
@@ -139,7 +139,7 @@ CollectStoneJob() {
         Click(886, 835)
         Sleep(1000)
     } else {
-        OutputLog("Click 源石場領取")
+        Utility.OutputLog("Click 源石場領取")
         for (position in CollectStoneSetting.StoneFactoryPositions) {
             Click(position*)
             Sleep(2000)
@@ -164,7 +164,7 @@ CollectStoneJob() {
 ^!d:: ; debug
 {
     color := PixelGetColor(1248, 900, 'RGB')
-    OutputLog(color)
+    Utility.OutputLog(color)
 }
 
 ; 賭博失敗重開
@@ -174,7 +174,7 @@ $f1::
 
     Runwait("taskkill /im " AppExe " /f")
     Sleep(1000)
-    OutputLog("Restart..")
+    Utility.OutputLog("Restart..")
     Run("steam://rungameid/1597460")
 
     ; reload
@@ -185,15 +185,15 @@ $f1::
             Sleep(1000)
     }
     if not UniqueID {
-        OutputLog("[" AppExe "] not found")
+        Utility.OutputLog("[" AppExe "] not found")
         ExitApp
     }
-    OutputLog("[" AppExe "] found [" UniqueID "]")
+    Utility.OutputLog("[" AppExe "] found [" UniqueID "]")
 }
 
 ^!z:: ; Ctrl+Alt+Z hotkey.
 {
-    OutputLog("Z pressed")
-    OutputLog("Stopped")
+    Utility.OutputLog("Z pressed")
+    Utility.OutputLog("Stopped")
     ExitApp
 }
