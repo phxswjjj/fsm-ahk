@@ -1,6 +1,7 @@
 class CollectStoneSettings {
     __New() {
         this.PrintScreen := false
+        this.NextFireTime := A_TickCount
         this.StoneFactoryPositions := [
             ; 木
             [311, 249],
@@ -13,5 +14,13 @@ class CollectStoneSettings {
             ; 土
             [446, 544]
         ]
+    }
+
+    IsNextFireTime() {
+        return A_TickCount >= this.NextFireTime
+    }
+
+    UpdateNextFireTime(nextFireIntervalMS := 60 * 60 * 1000) {
+        this.NextFireTime := A_TickCount + nextFireIntervalMS
     }
 }

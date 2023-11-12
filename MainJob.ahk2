@@ -22,8 +22,8 @@ SetTimer OuterWalkingJob, 200
 SetTimer FightingJob, 200
 SetTimer FightLoseJob, 200
 
-; 10 min
-SetTimer CollectStoneJob, 10 * 60 * 1000
+; 1 min
+SetTimer CollectStoneJob, 60 * 1000
 
 Return
 
@@ -112,22 +112,27 @@ CollectStoneJob() {
     If not WinActive("ahk_id " UniqueID)
         return
 
-    ; 領地管理特徵
+    if (!CollectStoneSetting.IsNextFireTime())
+        return
+
+    ; 領地管理特徵, 包含五行源石一鍵領取介面
     territoryManageColor := PixelGetColor(791, 731, 'RGB')
     If (!Utility.ArrayContain([0xDEE4D7, 0x6A4831], territoryManageColor))
         return
 
+    isFullResource := true
     fullTextColorRed := PixelGetColor(311, 249, 'RGB')
     if (!Utility.ArrayContain([0x4F000C, 0x9D0019], fullTextColorRed))
-        return
+        isFullResource := false
     fullTextColorWhite := PixelGetColor(321, 243, 'RGB')
     if (!Utility.ArrayContain([0x808080, 0xFFFFFF], fullTextColorWhite))
-        return
+        isFullResource := false
 
     btnColor := PixelGetColor(1248, 900, 'RGB')
     if (Utility.ArrayContain([0xFFF5CA, 0xEEE4CD], btnColor)) {
         Utility.OutputLog("Click 五行源石一鍵領取")
         Click(1248, 900)
+        CollectStoneSetting.UpdateNextFireTime()
         Sleep(2000)
 
         ; 保存結果
@@ -138,7 +143,7 @@ CollectStoneJob() {
 
         Click(886, 835)
         Sleep(1000)
-    } else {
+    } else if (isFullResource) {
         Utility.OutputLog("Click 源石場領取")
         for (position in CollectStoneSetting.StoneFactoryPositions) {
             Click(position*)
@@ -158,6 +163,7 @@ CollectStoneJob() {
                 Sleep(2000)
             }
         }
+        CollectStoneSetting.UpdateNextFireTime()
     }
 }
 
